@@ -6,6 +6,9 @@ import Image from "next/image";
 import styles from '../../styles/coffee-store.module.css'
 import cls from "classnames"
 import fetchStoreData from "@/lib/coffee-stores";
+import { isEmpty } from "@/utils";
+import { useContext, useEffect, useState } from "react";
+import { StoreContext } from "@/store/store-context";
 
 export const getStaticProps = async (statisProps) => {
     const params = statisProps.params;
@@ -38,14 +41,30 @@ const handleUpvoteButton = () => {
     console.log('upvote button')
 }
 
-const CoffeeStore = (props) => {
+const CoffeeStore = (initialProps) => {
     const router = useRouter();
     
     if (router.isFallback){
         <div>Loading....</div>
     }
 
-    const {name, address, imgUrl} = props.CoffeeStore;
+    const id = router.query.id;
+
+    const [CoffeeStore, setCoffeeStore] = useState(initialProps.CoffeeStore)
+    const {state : {coffeeStores}} = useContext(StoreContext);
+
+    useEffect(() => {
+        if(isEmpty(initialProps.CoffeeStore)){
+            if(coffeeStores.length > 0){
+                const findCoffeeStoreById = coffeeStores.find(
+                (CoffeeStore) => {
+                    return CoffeeStore.id.toString() === id; 
+                });
+                setCoffeeStore(findCoffeeStoreById)
+            }
+        }
+    },[id])
+    const {name, address, imgUrl} = CoffeeStore;
     return( 
     <div className={styles.layout}>
         <Head>

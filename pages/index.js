@@ -7,19 +7,23 @@ import Card from '@/components/card'
 // import coffeeStores from '../data/coffee-stores.json'
 import fetchStoreData from '@/lib/coffee-stores'
 import useTrackLocation from '@/hooks/use-track-location'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { ACTION_TYPES, StoreContext } from '@/store/store-context'
 
 const inter = Inter({ subsets: ['latin'] })
 export const getStaticProps = async () => {
-  const coffeeStores = await fetchStoreData()
+  const coffeeStores = await fetchStoreData() 
   return { props: { coffeeStores, } }
 }
 
 export default function Home(props) {
 
-  const {handleTrackLocation, latLong, locationErrorMsg, isLoading} = useTrackLocation();
-  const [userCoffeeStores, setUserCoffeeStores] = useState("");
+  const {handleTrackLocation, locationErrorMsg, isLoading} = useTrackLocation();
+  // const [userCoffeeStores, setUserCoffeeStores] = useState("");
   const [errorCoffeeStore, setErrorCoffeeStore] = useState(null);
+
+  const {dispatch, state} = useContext(StoreContext);
+  const {coffeeStores, latLong} = state;
 
   useEffect( () => {
     async function setCoffeeStoresByLocation(){
@@ -27,7 +31,12 @@ export default function Home(props) {
         try{
           const fetchCoffeeStore = await fetchStoreData(latLong,30)
           // console.log({fetchCoffeeStore})
-          setUserCoffeeStores(fetchCoffeeStore)         
+          // setUserCoffeeStores(fetchCoffeeStore)  
+          dispatch({
+            type: ACTION_TYPES.SET_COFFEE_STORES,
+            payload : {coffeeStores: fetchCoffeeStore}
+          });   
+          setErrorCoffeeStore("")    
         }
         catch(error){
           console.log(error)
@@ -61,12 +70,12 @@ export default function Home(props) {
         <div className={styles.heroImage}>
           <Image src='/static/hero-image.png' width={700} height={400} alt='This is hero image'></Image>
         </div>
-        {userCoffeeStores.length > 0 && (
+        {coffeeStores.length > 0 && (
           <div className={styles.sectionWrapper}>
           <h2 className={styles.heading2}> Coffee Stores Near Me</h2> 
           <div className={styles.cardLayout}>
           {
-            userCoffeeStores.map((coffeeStore) => {
+            coffeeStores.map((coffeeStore) => {
               return (
                 <Card key={coffeeStore.id}
                   className={styles.card}
