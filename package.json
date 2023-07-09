@@ -7,9 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "lint": "next lint"
   },
   "dependencies": {
     "airtable": "^0.12.1",
@@ -20,5 +18,9 @@
     "react-dom": "18.2.0",
     "swr": "^2.2.0",
     "unsplash-js": "^7.0.18"
+  },
+  "devDependencies": {
+    "eslint": "8.44.0",
+    "eslint-config-next": "13.4.9"
   }
 }
