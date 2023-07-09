@@ -10,9 +10,9 @@ const favouriteCoffeeStoreById = async (req, res) => {
                     // res.status(200)
                     // res.json(records)
                     const record = records[0]
-                    const calculateVoting = parseInt(record.upVoting) + parseInt(1);
-                    console.log(calculateVoting)
-                    const updatedRecord = table.update([
+                    const calculateVoting = parseInt(record.upVoting) + 1;
+                    // console.log(calculateVoting)
+                    const updatedRecord = await table.update([
                         {
                             id:record.recordId,
                             fields: {
@@ -20,6 +20,7 @@ const favouriteCoffeeStoreById = async (req, res) => {
                             }
                         }
                     ]);
+                    // console.log(updatedRecord)
                     if (updatedRecord){
                         const minifiedRecord = getMinifiedRecords(updatedRecord)
                         res.status(200);
@@ -37,6 +38,7 @@ const favouriteCoffeeStoreById = async (req, res) => {
         }       
     }
     catch(err) {
+        console.log(err)
         res.status(500);
         res.json({ message: "Error upvoting coffee store", err });
     }
