@@ -52,6 +52,7 @@ const CoffeeStore = (props) => {
     // console.log({coffeeStores})
 
     const handleCreateCoffeeStore = async (coffeeStore) => {
+        console.log("inside handle")
         try {
             const {id, name, address, imgUrl, upVoting} = coffeeStore;
 
@@ -69,6 +70,7 @@ const CoffeeStore = (props) => {
                 })
             });
             const dbCoffeeStore = await response.json();
+            console.log({dbCoffeeStore})
         }
         catch(err) {
             console.log("Error creating store", err)
@@ -76,7 +78,9 @@ const CoffeeStore = (props) => {
     }
 
     useEffect(() => {
-        // console.log({id})
+        console.log({id})
+        console.log(props.coffeeStore)
+        console.log(coffeeStores)
         if(isEmpty(props.coffeeStore)){
             if(coffeeStores.length > 0){
                 const coffeeStoreFromContext = coffeeStores.find(
@@ -97,7 +101,8 @@ const CoffeeStore = (props) => {
     },[id, props.coffeeStore, coffeeStores]);
 
     const [votingCount, setVotingCount] = useState(0);
-    const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, (url) => fetch(url).then(res => res.json()));
+    // const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, (url) => fetch(url).then(res => res.json()));
+    const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher,{ revalidateOnMount: false });
 
     useEffect(() => {
         console.log({data})
