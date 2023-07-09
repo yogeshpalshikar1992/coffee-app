@@ -7,8 +7,8 @@ const favouriteCoffeeStoreById = async (req, res) => {
             if(id){
                 const records = await findRecordByfilter(id)
                 if(records.length > 0){
-                    res.status(200)
-                    res.json(records)
+                    // res.status(200)
+                    // res.json(records)
                     const record = records[0]
                     const calculateVoting = parseInt(record.upVoting) + parseInt(1);
                     console.log(calculateVoting)
