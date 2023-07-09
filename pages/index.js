@@ -32,7 +32,7 @@ export default function Home(props) {
           // const fetchCoffeeStore = await fetchStoreData(latLong,30)
           const response = await fetch(`api/getCoffeeStoreByLocation?latLong=${latLong}&limit=30`)
           const coffeeStores = await response.json();
-          console.log(coffeeStores);
+          // console.log(coffeeStores);
           // console.log({fetchCoffeeStore})
           // setUserCoffeeStores(fetchCoffeeStore)  
           dispatch({
@@ -85,7 +85,7 @@ export default function Home(props) {
                   name={coffeeStore.name} 
                   imgUrl={coffeeStore.imgUrl || 
                   "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"} 
-                  href={`/coffee-store/${coffeeStore.id}`}>     
+                  href={`/coffee-store/${coffeeStore.id}` } alt={coffeeStore.name}>     
                 </Card>
               )
             })
@@ -105,7 +105,7 @@ export default function Home(props) {
                   name={coffeestore.name} 
                   imgUrl={coffeestore.imgUrl || 
                   "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"} 
-                  href={`/coffee-store/${coffeestore.id}`}>     
+                  href={`/coffee-store/${coffeestore.id}`} alt={coffeestore.name}>     
                 </Card>
               )
             })
